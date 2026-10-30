@@ -9,24 +9,18 @@ jobs:
   build-android-apk:
     name: Build & Package Android APK
     runs-on: ubuntu-latest
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-
-      - name: Install Node Dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Build Web Application
-        run: npm run build
-
-      - name: Sync Capacitor Android
-        run: npx cap sync android
+          node-version: 20
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -34,21 +28,66 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Grant Execute Permission for Gradle
-        run: chmod +x android/gradlew
+      - name: Prepare NPM Environment
+        run: |
+          echo "legacy-peer-deps=true" > .npmrc
+          npm config set legacy-peer-deps true
+
+      - name: Install Node Dependencies
+        run: |
+          npm install --legacy-peer-deps
+
+      - name: Ensure Capacitor Config
+        run: |
+          if [ ! -f "capacitor.config.json" ]; then
+            cat << 'EOF' > capacitor.config.json
+          {
+            "appId": "com.satyam.schoolcam",
+            "appName": "SchoolCam Bihar by Satyam",
+            "webDir": "dist",
+            "bundledWebRuntime": false,
+            "server": {
+              "androidScheme": "https"
+            }
+          }
+          EOF
+          fi
+
+      - name: Build Web Application
+        run: |
+          npm run build
+
+      - name: Initialize & Sync Android Platform
+        run: |
+          if [ ! -d "android" ]; then
+            echo "Initializing native Android project..."
+            npx cap add android
+          fi
+          if [ -f "android/variables.gradle" ]; then
+            sed -i 's/compileSdkVersion = 36/compileSdkVersion = 35/g' android/variables.gradle
+            sed -i 's/targetSdkVersion = 36/targetSdkVersion = 35/g' android/variables.gradle
+          fi
+          npx cap sync android
+
+      - name: Configure Android SDK & Local Properties
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          chmod +x android/gradlew
 
       - name: Build Android APK with Gradle
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
-      - name: Prepare APK for Download
+      - name: Prepare APK File
         run: |
           cp android/app/build/outputs/apk/debug/app-debug.apk SchoolCam_Bihar_by_Satyam.apk
+          ls -lh SchoolCam_Bihar_by_Satyam.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SchoolCam-Android-APK
+          name: SchoolCam_Bihar_by_Satyam_APK
           path: SchoolCam_Bihar_by_Satyam.apk
           retention-days: 30
