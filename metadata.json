@@ -1,0 +1,6 @@
+{
+  "name": "GeoSnap - GPS Watermark Camera",
+  "description": "Professional geo-tagging photo camera with real-time GPS coordinates, reverse geocoding address stamps, custom field notes, front/back switching, flash, and gallery.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

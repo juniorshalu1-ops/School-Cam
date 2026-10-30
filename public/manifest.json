@@ -1,0 +1,52 @@
+{
+  "id": "/",
+  "name": "SchoolCam Bihar by Satyam",
+  "short_name": "SchoolCam",
+  "description": "SchoolCam by Satyam - Professional geo-tag photo camera for Bihar teachers and schools with GPS coordinates, area stamps, and red watermark.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#ef4444",
+  "background_color": "#020617",
+  "categories": ["education", "photo", "utilities"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/assets/aistudio/ic_launcher_c43f4821.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/aistudio/ic_launcher_c43f4821.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/aistudio/ic_launcher_c43f4821.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/aistudio/ic_launcher_c43f4821.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "SchoolCam Camera Viewfinder"
+    },
+    {
+      "src": "/assets/aistudio/ic_launcher_c43f4821.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "SchoolCam Geotag Photo"
+    }
+  ]
+}

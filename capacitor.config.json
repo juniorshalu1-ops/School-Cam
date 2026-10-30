@@ -1,0 +1,9 @@
+{
+  "appId": "com.satyam.schoolcam",
+  "appName": "SchoolCam Bihar by Satyam",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}
